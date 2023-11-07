@@ -1,0 +1,70 @@
+/* GameEngine.css */
+
+/* GameEngine.css */
+html, body {
+  height: 100%; /* Make sure the HTML and body are taking full height */
+  margin: 0; /* Reset default margin */
+  overflow: hidden; /* Prevent scrolling */
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* コンテンツを下部に配置 */
+  height: 100vh;
+  overflow: hidden;
+}
+
+.message-area {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.911); /* 半透明の黒背景 */
+  color: white; /* 文字色を白に */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.text {
+  font-size: 18px; /* フォントサイズを大きくする */
+  font-weight: bold; /* 通常のフォントの太さ */
+  line-height: 1.6; /* 行間を広げる */
+  color: #ddcece; /* 文字色 */
+  margin: 0 0 10px; /* 下のマージンを設定 */
+}
+
+/* テキストとボタンの背景色を設定 */
+.message, .options-container {
+  background-color: rgba(0, 0, 0, 0.5); /* 背景色の設定 */
+  margin: 10px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* ボタンのスタイルをモダンなものに更新 */
+.button {
+  background-color: #947a23; /* Bootstrap primary color */
+  color: rgb(29, 20, 20);
+  border: none;
+  padding: 10px 15px;
+  margin: 5px; /* Spacing between buttons */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: background-color 0.2s; /* Smooth transition for hover effect */
+}
+
+.button:hover {
+  background-color: #695618; /* Darken the button on hover */
+}
+
+/* ファイルアップロードのスタイル */
+.file-upload-container {
+  background-color: #947a2342; /* Slightly more opaque than other backgrounds */
+  border: 1px dashed #947a23; /* Dashed border using the primary color */
+  padding: 20px;
+  text-align: center;
+  margin: 0 0 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

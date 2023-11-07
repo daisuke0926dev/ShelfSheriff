@@ -1,5 +1,5 @@
 // src/GameEngine.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Message from './components/Message';
 import OptionsContainer from './components/OptionsContainer';
 import FileUpload from './components/FileUpload';
@@ -9,6 +9,19 @@ import sentences from './sentences';
 function GameEngine() {
   // 現在のメッセージの状態を管理
   const [currentSentence, setCurrentSentence] = useState(sentences.initial);
+
+  const preloadBackgroundImages = () => {
+    Object.values(sentences).forEach((sentence) => {
+      if (sentence.background) {
+        const img = new Image();
+        img.src = sentence.background;
+      }
+    });
+  };
+  // コンポーネントがマウントされた時に背景画像をプリロードします
+  useEffect(() => {
+    preloadBackgroundImages();
+  }, []);
 
   const handleOptionClick = (nextKey) => {
     const nextSentence = sentences[nextKey];

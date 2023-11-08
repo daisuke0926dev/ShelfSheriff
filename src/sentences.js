@@ -45,10 +45,35 @@ const sentences = {
     key: '5',
     text: '「 分析は済んだ。この結果が、君の過去のページ、そしてこれから開くべき新しい章にどんな影響を及ぼすかは知らないが、教えてやろう。君という人間を。」',
     options: [
-      { label: '...?', nextKey: '6' },
+      { label: '...?', nextKey: 'choose' },
     ],
     background: '/images/detective_talk2.jpg',
   },
+  choose: {
+    key: 'choose',
+    text: '聞きたいものを選んでね',
+    options: [
+      { label: 'id`', nextKey: 'id' },
+      { label: 'title`', nextKey: 'title' },
+    ],
+    background: '/images/detective_talk2.jpg',
+  },
+  // id: {
+  //   key: 'id',
+  //   text: 'json.id.value',
+  //   options: [
+  //     { label: '...go_titile', nextKey: 'title' },
+  //   ],
+  //   background: '/images/detective_talk2.jpg',
+  // },
+  // title: {
+  //   key: 'title',
+  //   text: 'json.title.value',
+  //   options: [
+  //     { label: '...go_id', nextKey: 'id' },
+  //   ],
+  //   background: '/images/detective_talk2.jpg',
+  // },
 };
 
 export default sentences;

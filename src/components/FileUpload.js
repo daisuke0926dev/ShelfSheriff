@@ -1,36 +1,56 @@
 // src/components/FileUpload.js
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function FileUpload({ onComplete }) {
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
   const [isUploading, setIsUploading] = useState(false);
+
+  // 画像ファイルをBase64にエンコードする関数
+  const encodeImageFileAsURL = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(',')[1]); // Base64エンコードされた文字列のデータ部分のみを返す
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      setIsUploading(true); // アップロード開始時にローディング状態にする
+      setIsUploading(true);
       try {
-        // ファイルアップロードのシミュレート用にsleep関数を定義
-        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+        // ファイルを読み込んでBase64エンコーディングに変換
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async () => {
+          const base64 = await toBase64(file);
 
-        // ここでファイルをAPIにアップロードする
-        // const formData = new FormData();
-        // formData.append('file', file);
-        // const response = await axios.post('/upload', formData);
+          // APIエンドポイントを環境変数から取得
+          const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
 
-        console.log('start');
-        await sleep(3000); // 3秒待つ
-        console.log(`${new Date().getSeconds()} 秒`);
-        console.log('end');
-        
-        // ここでAPIからのレスポンスを処理する
+          // // Lambdaに送信
+          // const response = await axios.post(apiEndpoint, {
+          //   image: base64
+          // });
+          // 検証環境の動作確認として、JsonをGetする。
+          const response = await axios.get(apiEndpoint);
+          // onCompleteを呼び出し、レスポンスのデータを渡す
+          onComplete(response.data);
+        };
       } catch (error) {
-        // エラー処理をここに実装
         console.error("File upload failed:", error);
       } finally {
-        setIsUploading(false); // アップロードが終了したらローディング状態を解除
+        setIsUploading(false);
       }
-      onComplete(); // sleepの後にonCompleteを呼び出して親コンポーネントに通知
     }
+    const toBase64 = (file) => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
   };
 
   return (

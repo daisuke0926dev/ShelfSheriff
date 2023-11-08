@@ -1,4 +1,3 @@
-// src/GameEngine.js
 import React, { useState, useEffect } from 'react';
 import Message from './components/Message';
 import OptionsContainer from './components/OptionsContainer';
@@ -7,8 +6,9 @@ import './GameEngine.css';
 import sentences from './sentences';
 
 function GameEngine() {
-  // 現在のメッセージの状態を管理
   const [currentSentence, setCurrentSentence] = useState(sentences.initial);
+  const [apiResponse, setApiResponse] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState(new Set());
 
   const preloadBackgroundImages = () => {
     Object.values(sentences).forEach((sentence) => {
@@ -18,24 +18,77 @@ function GameEngine() {
       }
     });
   };
-  // コンポーネントがマウントされた時に背景画像をプリロードします
+
+  const handleUploadComplete = (response) => {
+    setApiResponse(response);
+    console.log("here");
+    handleOptionClick('afterUpload');
+  };
+
   useEffect(() => {
     preloadBackgroundImages();
   }, []);
 
   const handleOptionClick = (nextKey) => {
+    if (nextKey === "id" || nextKey === "title"){
+    setSelectedOptions((prevSelectedOptions) => {
+      const newSelectedOptions = new Set(prevSelectedOptions);
+      newSelectedOptions.add(nextKey);
+      return newSelectedOptions;
+    })};
+
     const nextSentence = sentences[nextKey];
     if (!nextSentence) {
       console.error(`The next key '${nextKey}' is not found in the sentences.`);
-      return; // ここで処理を中止します。
+      return;
     }
     setCurrentSentence(nextSentence);
   };
 
-  // 現在の選択肢を取得
-  const currentOptions = currentSentence.options || [];
+  const addSentenceFromApiResponse = (apiResponse, property) => {
+    const key = property; // 'id' または 'title'
+    if (!sentences[key]) {
+      sentences[key] = {
+        key: key,
+        text: "  " + apiResponse[key], // Fix for the missing character.
+        options: [],
+        background: '/images/detective_talk2.jpg',
+      };
+    }
+    return key;
+  };
 
-  // 背景画像をスタイルオブジェクトとして取得する関数
+  const renderOptions = () => {
+    if (apiResponse && selectedOptions.size < 2) {
+      return ['id', 'title'].filter(property => !selectedOptions.has(property)).map(property => ({
+        label: property,
+        onClick: () => {
+          const newKey = addSentenceFromApiResponse(apiResponse, property);
+          handleOptionClick(newKey);
+          if (selectedOptions.size === 2) {
+            // Add a new option when both 'id' and 'title' have been selected
+            const newOptionKey = 'newOptionAfterBoth';
+            if (!sentences[newOptionKey]) {
+              sentences[newOptionKey] = {
+                key: newOptionKey,
+                text: 'You have selected both options, now you can proceed.',
+                options: [{ label: 'Proceed', nextKey: 'nextMessage' }],
+                background: '/images/new-background.jpg',
+              };
+            }
+          }
+        }
+      }));
+    } else if(apiResponse && selectedOptions.size === 2){
+
+    }
+    const currentOptions = currentSentence.options || [];
+    return currentOptions.map(option => ({
+      label: option.label,
+      onClick: () => handleOptionClick(option.nextKey)
+    }));
+  };
+
   const getBackgroundStyle = () => ({
     backgroundImage: `url(${currentSentence.background})`,
     backgroundSize: 'cover',
@@ -45,33 +98,25 @@ function GameEngine() {
     overflow: 'hidden',
   });
 
-  const renderContent = () => {
-    switch (currentSentence.type) {
-      case 'fileUpload':
-        return <FileUpload onComplete={() => handleOptionClick('afterUpload')} />;
-      default:
-        return (
-          <OptionsContainer options={currentOptions.map(option => ({
-            label: option.label,
-            onClick: () => handleOptionClick(option.nextKey)
-          }))} />
-        );
-    }
-  };
-
-  // `key`には現在のセンテンスのユニークな値を使用します
-  // これにより、新しいセンテンスが来るたびにメッセージコンポーネントがリセットされます
   const messageKey = currentSentence.key || 'initial';
 
   return (
     <div className="game-container" style={getBackgroundStyle()}>
       <div className="message-area">
-        {/* `key`属性を指定してメッセージコンポーネントを再マウントします */}
         <Message key={messageKey} text={currentSentence.text} />
         {renderContent()}
       </div>
     </div>
   );
+
+  function renderContent() {
+    switch (currentSentence.type) {
+      case 'fileUpload':
+        return <FileUpload onComplete={handleUploadComplete} />;
+      default:
+        return <OptionsContainer options={renderOptions()} />;
+    }
+  }
 }
 
 export default GameEngine;

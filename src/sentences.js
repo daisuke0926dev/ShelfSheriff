@@ -58,22 +58,15 @@ const sentences = {
     ],
     background: '/images/detective_talk2.jpg',
   },
-  // id: {
-  //   key: 'id',
-  //   text: 'json.id.value',
-  //   options: [
-  //     { label: '...go_titile', nextKey: 'title' },
-  //   ],
-  //   background: '/images/detective_talk2.jpg',
-  // },
-  // title: {
-  //   key: 'title',
-  //   text: 'json.title.value',
-  //   options: [
-  //     { label: '...go_id', nextKey: 'id' },
-  //   ],
-  //   background: '/images/detective_talk2.jpg',
-  // },
+  after_choose: {
+    key: 'after_choose',
+    text: 'after_choose',
+    options: [
+      { label: 'id', nextKey: 'id' },
+    ],
+    background: '/images/detective_talk2.jpg',
+  },
+
 };
 
 export default sentences;

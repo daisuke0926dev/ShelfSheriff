@@ -65,23 +65,26 @@ function GameEngine() {
         onClick: () => {
           const newKey = addSentenceFromApiResponse(apiResponse, property);
           handleOptionClick(newKey);
-          if (selectedOptions.size === 2) {
-            // Add a new option when both 'id' and 'title' have been selected
-            const newOptionKey = 'newOptionAfterBoth';
-            if (!sentences[newOptionKey]) {
-              sentences[newOptionKey] = {
-                key: newOptionKey,
-                text: 'You have selected both options, now you can proceed.',
-                options: [{ label: 'Proceed', nextKey: 'nextMessage' }],
-                background: '/images/new-background.jpg',
-              };
-            }
-          }
         }
       }));
-    } else if(apiResponse && selectedOptions.size === 2){
-
+    } else if (apiResponse && selectedOptions.size === 2) {
+      // Once both 'id' and 'title' have been selected, we can proceed.
+      const newOptionKey = 'after_choose';
+      if (!sentences[newOptionKey]) {
+        sentences[newOptionKey] = {
+          key: newOptionKey,
+          text: 'You have selected both options, now you can proceed.',
+          options: [{ label: 'Proceed1', nextKey: 'id' }],
+          background: '/images/new-background.jpg',
+        };
+      }
+      return [{
+        label: 'Proceed2',
+        onClick: () => handleOptionClick(sentences[newOptionKey].options[nextKey]),
+      }];
     }
+    
+    // Default case to handle other sentences
     const currentOptions = currentSentence.options || [];
     return currentOptions.map(option => ({
       label: option.label,

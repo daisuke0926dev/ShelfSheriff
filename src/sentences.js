@@ -48,21 +48,31 @@ const sentences = {
       { label: '...?', nextKey: 'choose' },
     ],
     background: '/images/detective_talk2.jpg',
-  },
+  },  
   choose: {
     key: 'choose',
-    text: '聞きたいものを選んでね',
+    text: '次に、どの情報を探偵に伝えますか？',
     options: [
-      { label: 'id`', nextKey: 'id' },
-      { label: 'title`', nextKey: 'title' },
+      { label: 'id', nextKey: 'id' },
+      { label: 'title', nextKey: 'title' },
     ],
     background: '/images/detective_talk2.jpg',
   },
   after_choose: {
     key: 'after_choose',
-    text: 'after_choose',
+    text: 'これらの選択肢から選んでください。',
     options: [
-      { label: 'id', nextKey: 'id' },
+      { label: '選択肢1のラベル', nextKey: 'someKey1' },
+      { label: '選択肢2のラベル', nextKey: 'someKey2' },
+      // 必要に応じて他の選択肢を追加
+    ],
+    background: '/images/detective_talk2.jpg',
+  },
+  xx: {
+    key: 'xx',
+    text: 'xx',
+    options: [
+      { label: 'acs', nextKey: 'acs' },
     ],
     background: '/images/detective_talk2.jpg',
   },

@@ -23,13 +23,16 @@ function GameEngine() {
     setApiResponse(response);
     console.log("here");
     handleOptionClick('afterUpload');
+    console.log("hi, there")
   };
-
+  
   useEffect(() => {
     preloadBackgroundImages();
   }, []);
-
+  
   const handleOptionClick = (nextKey) => {
+    console.log("hi, there2")
+    console.log("nextkey:"+nextKey)
     if (nextKey === "id" || nextKey === "title"){
     setSelectedOptions((prevSelectedOptions) => {
       const newSelectedOptions = new Set(prevSelectedOptions);
@@ -70,17 +73,10 @@ function GameEngine() {
     } else if (apiResponse && selectedOptions.size === 2) {
       // Once both 'id' and 'title' have been selected, we can proceed.
       const newOptionKey = 'after_choose';
-      if (!sentences[newOptionKey]) {
-        sentences[newOptionKey] = {
-          key: newOptionKey,
-          text: 'You have selected both options, now you can proceed.',
-          options: [{ label: 'Proceed1', nextKey: 'id' }],
-          background: '/images/new-background.jpg',
-        };
-      }
+      console.log("woowo")
       return [{
         label: 'Proceed2',
-        onClick: () => handleOptionClick(sentences[newOptionKey].options[nextKey]),
+        onClick: () => handleOptionClick(newOptionKey),
       }];
     }
     
@@ -113,6 +109,7 @@ function GameEngine() {
   );
 
   function renderContent() {
+    console.log("Hello")
     switch (currentSentence.type) {
       case 'fileUpload':
         return <FileUpload onComplete={handleUploadComplete} />;

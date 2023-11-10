@@ -8,7 +8,6 @@ import sentences from './sentences';
 function GameEngine() {
   const [currentSentence, setCurrentSentence] = useState(sentences.initial);
   const [apiResponse, setApiResponse] = useState(null);
-  const [selectedOptions, setSelectedOptions] = useState(new Set());
 
   const preloadBackgroundImages = () => {
     Object.values(sentences).forEach((sentence) => {
@@ -19,68 +18,33 @@ function GameEngine() {
     });
   };
 
-  const handleUploadComplete = (response) => {
-    setApiResponse(response);
-    console.log("here");
-    handleOptionClick('afterUpload');
-    console.log("hi, there")
-  };
-  
   useEffect(() => {
     preloadBackgroundImages();
   }, []);
-  
-  const handleOptionClick = (nextKey) => {
-    console.log("hi, there2")
-    console.log("nextkey:"+nextKey)
-    if (nextKey === "id" || nextKey === "title"){
-    setSelectedOptions((prevSelectedOptions) => {
-      const newSelectedOptions = new Set(prevSelectedOptions);
-      newSelectedOptions.add(nextKey);
-      return newSelectedOptions;
-    })};
 
-    const nextSentence = sentences[nextKey];
-    if (!nextSentence) {
-      console.error(`The next key '${nextKey}' is not found in the sentences.`);
-      return;
-    }
-    setCurrentSentence(nextSentence);
+  const handleUploadComplete = (response) => {
+    setApiResponse(response);
+    handleOptionClick('afterUpload');
   };
 
-  const addSentenceFromApiResponse = (apiResponse, property) => {
-    const key = property; // 'id' または 'title'
-    if (!sentences[key]) {
-      sentences[key] = {
-        key: key,
-        text: "  " + apiResponse[key], // Fix for the missing character.
-        options: [],
-        background: '/images/detective_talk2.jpg',
-      };
+  const handleOptionClick = (nextKey) => {
+    // APIレスポンスがある場合、メッセージ内容をAPIから取得
+    if (apiResponse && (nextKey === 'id' || nextKey === 'title' || nextKey === 'url')) {
+      const newText = apiResponse[nextKey]; // APIから取得したテキスト
+      const newSentence = { ...sentences[nextKey], text: "  " + newText }; // 2文字目が抜けるから空白を生贄に
+      setCurrentSentence(newSentence);
+    } else {
+      // APIレスポンスがない場合、通常通りsentencesから次のセンテンスを取得
+      const nextSentence = sentences[nextKey];
+      if (!nextSentence) {
+        console.error(`The next key '${nextKey}' is not found in the sentences.`);
+        return;
+      }
+      setCurrentSentence(nextSentence);
     }
-    return key;
   };
 
   const renderOptions = () => {
-    if (apiResponse && selectedOptions.size < 2) {
-      return ['id', 'title'].filter(property => !selectedOptions.has(property)).map(property => ({
-        label: property,
-        onClick: () => {
-          const newKey = addSentenceFromApiResponse(apiResponse, property);
-          handleOptionClick(newKey);
-        }
-      }));
-    } else if (apiResponse && selectedOptions.size === 2) {
-      // Once both 'id' and 'title' have been selected, we can proceed.
-      const newOptionKey = 'after_choose';
-      console.log("woowo")
-      return [{
-        label: 'Proceed2',
-        onClick: () => handleOptionClick(newOptionKey),
-      }];
-    }
-    
-    // Default case to handle other sentences
     const currentOptions = currentSentence.options || [];
     return currentOptions.map(option => ({
       label: option.label,
@@ -109,7 +73,6 @@ function GameEngine() {
   );
 
   function renderContent() {
-    console.log("Hello")
     switch (currentSentence.type) {
       case 'fileUpload':
         return <FileUpload onComplete={handleUploadComplete} />;

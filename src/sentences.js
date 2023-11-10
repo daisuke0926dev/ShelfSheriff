@@ -51,30 +51,48 @@ const sentences = {
   },  
   choose: {
     key: 'choose',
-    text: '次に、どの情報を探偵に伝えますか？',
+    text: 'ど の情報を探偵から聞きますか',
     options: [
-      { label: 'id', nextKey: 'id' },
-      { label: 'title', nextKey: 'title' },
+      { label: 'あなたの性格', nextKey: 'id' },
+      { label: 'あなたの趣向', nextKey: 'title' },
     ],
     background: '/images/detective_talk2.jpg',
+  },
+  id: {
+    key: 'id',
+    options: [
+      { label: 'あなたの趣向', nextKey: 'title' },
+      { label: '次に進む', nextKey: 'after_choose' },
+    ],
+    background: '/images/detective_has_a_pen.png',
+  },
+  title: {
+    key: 'title',
+    options: [
+      { label: 'あなたの性格', nextKey: 'id' },
+      { label: '次に進む', nextKey: 'after_choose' },
+    ],
+    background: '/images/detective_explain.png',//todo
   },
   after_choose: {
     key: 'after_choose',
-    text: 'これらの選択肢から選んでください。',
+    text: '  それでは最後に、君に合うオススメの新ジャンルを教えてあげよう',
     options: [
-      { label: '選択肢1のラベル', nextKey: 'someKey1' },
-      { label: '選択肢2のラベル', nextKey: 'someKey2' },
-      // 必要に応じて他の選択肢を追加
+      { label: '聞く', nextKey: 'url' },
     ],
-    background: '/images/detective_talk2.jpg',
+    background: '/images/detective_read_a_book.png',
   },
-  xx: {
-    key: 'xx',
-    text: 'xx',
+  url: {
+    key: 'url',
     options: [
-      { label: 'acs', nextKey: 'acs' },
+      { label: 'アプリを閉じる', nextKey: 'end' },
     ],
-    background: '/images/detective_talk2.jpg',
+    background: '/images/detective_leave.png',
+  },
+  end: {
+    key: 'end',
+    text: '  作者「遊んでくれてありがとうございます。本作はベータ版であり、改良の予定はありません。」',
+    background: '/images/building_in_app.jpg',
   },
 
 };

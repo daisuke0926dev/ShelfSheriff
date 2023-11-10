@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 function FileUpload({ onComplete }) {
-  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
   const [isUploading, setIsUploading] = useState(false);
 
   // 画像ファイルをBase64にエンコードする関数
@@ -30,12 +29,12 @@ function FileUpload({ onComplete }) {
           // APIエンドポイントを環境変数から取得
           const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
 
-          // // Lambdaに送信
-          // const response = await axios.post(apiEndpoint, {
-          //   image: base64
-          // });
-          // 検証環境の動作確認として、JsonをGetする。
-          const response = await axios.get(apiEndpoint);
+          // Lambdaに送信
+          const response = await axios.post(apiEndpoint, {
+            image: base64
+          });
+          // // 検証環境の動作確認として、JsonをGetする。
+          // const response = await axios.get(apiEndpoint);
           // onCompleteを呼び出し、レスポンスのデータを渡す
           onComplete(response.data);
         };

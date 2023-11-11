@@ -29,7 +29,7 @@ function GameEngine() {
 
   const handleOptionClick = (nextKey) => {
     // APIレスポンスがある場合、メッセージ内容をAPIから取得
-    if (apiResponse && (nextKey === 'id' || nextKey === 'title' || nextKey === 'url')) {
+    if (apiResponse && (nextKey === 'character' || nextKey === 'interesting' || nextKey === 'recommend')) {
       const newText = apiResponse[nextKey]; // APIから取得したテキスト
       const newSentence = { ...sentences[nextKey], text: "  " + newText }; // 2文字目が抜けるから空白を生贄に
       setCurrentSentence(newSentence);

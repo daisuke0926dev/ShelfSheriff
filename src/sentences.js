@@ -53,23 +53,23 @@ const sentences = {
     key: 'choose',
     text: 'ど の情報を探偵から聞きますか',
     options: [
-      { label: 'あなたの性格', nextKey: 'id' },
-      { label: 'あなたの趣向', nextKey: 'title' },
+      { label: 'あなたの性格', nextKey: 'character' },
+      { label: 'あなたの趣向', nextKey: 'interesting' },
     ],
     background: '/images/detective_talk2.jpg',
   },
-  id: {
-    key: 'id',
+  character: {
+    key: 'character',
     options: [
-      { label: 'あなたの趣向', nextKey: 'title' },
+      { label: 'あなたの趣向', nextKey: 'interesting' },
       { label: '次に進む', nextKey: 'after_choose' },
     ],
     background: '/images/detective_has_a_pen.png',
   },
-  title: {
-    key: 'title',
+  interesting: {
+    key: 'interesting',
     options: [
-      { label: 'あなたの性格', nextKey: 'id' },
+      { label: 'あなたの性格', nextKey: 'character' },
       { label: '次に進む', nextKey: 'after_choose' },
     ],
     background: '/images/detective_explain.png',//todo
@@ -78,12 +78,12 @@ const sentences = {
     key: 'after_choose',
     text: '  それでは最後に、君に合うオススメの新ジャンルを教えてあげよう',
     options: [
-      { label: '聞く', nextKey: 'url' },
+      { label: '聞く', nextKey: 'recommend' },
     ],
     background: '/images/detective_read_a_book.png',
   },
-  url: {
-    key: 'url',
+  recommend: {
+    key: 'recommend',
     options: [
       { label: 'アプリを閉じる', nextKey: 'end' },
     ],
@@ -91,7 +91,7 @@ const sentences = {
   },
   end: {
     key: 'end',
-    text: '  作者「遊んでくれてありがとうございます。本作はベータ版であり、改良の予定はありません。」',
+    text: '  作者「遊んでくれてありがとうございます。本作はベータ版であり、継続的・大規模な改良する予定はありません。」',
     background: '/images/building_in_app.jpg',
   },
 
